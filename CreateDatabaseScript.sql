@@ -1,6 +1,11 @@
 create database ecommerce;
 use ecommerce;
 
+create table roles (
+	id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    role_name VARCHAR(255)
+);
+
 CREATE TABLE customers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -8,7 +13,9 @@ CREATE TABLE customers (
     password VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20),
-    created_at TIMESTAMP DEFAULT NOW()
+    role_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE countries (
