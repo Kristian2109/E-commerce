@@ -1,0 +1,30 @@
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "kristian.per@",
+    "password": "1234567"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "email": "kristian.pertrov1998@gmail.com",
+    "password": "A1234567",
+    "firstName": "Kristian",
+    "lastName": "Petrov",
+    "phoneNumber": "0884440155"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "kristian.pertrov1998@gmail.com",
+    "password": "A1234567"
+}

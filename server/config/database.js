@@ -9,20 +9,16 @@ const db = mysql.createConnection({
     database: process.env.MYSQL_DATABASE
 });
 
-function connectDatabase() {
-    return new Promise((resolve, reject) => {
-        db.connect((err) => {
-            if (err) {
-                console.log(err.message);
-                reject(err);
-            }
-            else {
-                console.log("Database running");
-                resolve(true);
-            }
-        }); 
-    }) 
-}
+db.connect((err) => {
+    if (err) {
+        console.log(err.message);
+    }
+    else {
+        console.log("Database running");
+    }
+})
 
-module.exports = connectDatabase;
+module.exports = {
+    db
+}
 
