@@ -37,10 +37,10 @@ CREATE TABLE addresses (
 CREATE TABLE customer_addresses (
     customer_id INT NOT NULL,
     address_id INT NOT NULL,
-    FOREIGN KEY (customer_id)
-        REFERENCES customers (id),
-    FOREIGN KEY (address_id)
-        REFERENCES addresses (id)
+    address_number INT NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES customers (id),
+    FOREIGN KEY (address_id) REFERENCES addresses (id),
+    PRIMARY KEY (customer_id, address_id),
 );
 
 CREATE TABLE categories (
@@ -134,3 +134,12 @@ CREATE TABLE reviews (
     FOREIGN KEY (customer_id)
         REFERENCES customers (id)
 );
+
+insert into roles (role_name) values
+("administrator"),
+("moderator"),
+("user");
+
+insert into countries (name) values 
+("Romania"),
+("Bulgaria");

@@ -1,6 +1,6 @@
 require("dotenv").config();
 const redisClient = require("../config/redis");
-const { sendInternalServerErrorMessage } = require("../utils/helpers")
+const { sendInternalServerErrorMessage } = require("../utils/helpers");
 
 async function verifyAuth(req, res, next) {
     try {

@@ -1,13 +1,3 @@
-POST http://localhost:3000/api/v1/auth/login
-Content-Type: application/json
-
-{
-    "email": "kristian.per@",
-    "password": "1234567"
-}
-
-###
-
 POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
@@ -27,4 +17,28 @@ Content-Type: application/json
 {
     "email": "kristian.pertrov1998@gmail.com",
     "password": "A1234567"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/logout
+Content-Type: application/json
+Cookie: sessionId=387d54f9-5534-4ba4-b25c-54166722994b; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 08:49:37 GMT; HttpOnly
+
+{}
+
+
+###
+
+POST http://localhost:3000/api/v1/customers/1/address
+Content-Type: application/json
+Cookie: sessionId=d3dc9fe4-a9aa-48b7-ab15-330dd5e6fad9; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 11:38:45 GMT; HttpOnly
+
+{
+    "city": "Budapest",
+    "country": "Romania",
+    "streetName": "Main",
+    "streetNumber": 62,
+    "postalCode": 1000,
+    "addressNumber": 2
 }

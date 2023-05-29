@@ -14,7 +14,7 @@ db.connect((err) => {
         console.log(err.message);
     }
     else {
-        console.log("Database running");
+        console.log("MYSQL database running!");
     }
 })
 

@@ -102,8 +102,8 @@ async function verifyRegistrationHttp(req, res) {
 
 async function updateCustomerAddressHttp(req, res) {
     try {
-        const { city, country, streetName, streetNumber, postalCode, customerId, addressNumber } = req.body;
-        
+        const customerId = req.params.customerId;
+        const { city, country, streetName, streetNumber, postalCode, addressNumber } = req.body;
         const result = await Address.handleAddressCreationAndAssignment(city, country, streetName, streetNumber, postalCode, customerId, addressNumber);
 
         return res.status(200).json({data: result, msg: "Address update completed!", success: true});
@@ -121,7 +121,18 @@ async function deleteCustomerProfileHttp(req, res) {
 }
 
 async function logoutCustomerHttp(req, res) {
+    try {
+        const sessionId = req.cookies?.sessionId;
+        
+        if (!sessionId) {
+            return res.status(200).json({msg:"Already logged out!", success:true});
+        }
 
+        await redisClient.del(`SessionId:${sessionId}`);
+        return res.status(200).json({msg:"Logged out successfully!", success:true});
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error)
+    }
 }
 
 module.exports = {
