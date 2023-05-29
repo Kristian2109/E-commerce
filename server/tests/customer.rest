@@ -15,8 +15,8 @@ POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email": "kristian.pertrov1998@gmail.com",
-    "password": "A1234567"
+    "email": "kristian.petrov1998@gmail.com",
+    "password": "Krisko123"
 }
 
 ###
@@ -41,4 +41,34 @@ Cookie: sessionId=d3dc9fe4-a9aa-48b7-ab15-330dd5e6fad9; Max-Age=864; Path=/; Exp
     "streetNumber": 62,
     "postalCode": 1000,
     "addressNumber": 2
+}
+
+###
+
+PUT http://localhost:3000/api/v1/customers/1/details
+Content-Type: application/json
+Cookie: sessionId=2649e854-ecb3-4d0c-bcaf-7876f561cf1b; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 16:01:45 GMT; HttpOnly
+
+{
+    "firstName": "Pesho",
+    "lastName": "Petrov",
+    "phoneNumber": "088444155"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/restore-password
+Content-Type: application/json
+
+{
+    "email": "kristian.petrov1998@gmail.com"
+}
+
+###
+
+PATCH http://localhost:3000/api/v1/auth/restore-password/1b5be20e-dd80-4157-b91b-13f1c47a8d5c
+Content-Type: application/json
+
+{
+    "newPassword": "Krisko123"
 }

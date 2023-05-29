@@ -60,5 +60,6 @@ function isValidUserData(email, firstName, lastName, password, phoneNumber) {
 
 module.exports = {
     isValidUserData,
-    isValidName
+    isValidName,
+    isValidPassword
 }
