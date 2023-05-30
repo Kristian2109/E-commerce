@@ -1,5 +1,29 @@
 const { db }= require("../config/database");
 
+async function getCustomerAddresses(customerId) {
+    const query = `SELECT 
+                        address_level, city, postal_code, street_name, street_number, coun.name
+                    FROM
+                        customer_addresses AS ca
+                            LEFT JOIN
+                        addresses AS a ON ca.address_id = a.id
+                            LEFT JOIN
+                        countries AS coun ON coun.id = a.country_id
+                    WHERE
+                        ?`;
+
+    return new Promise((resolve, reject) => {
+        db.query(query, { "customer_id": customerId }, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        })
+    })
+}
+
 async function getCoutryIdByName(country) {
     const query = "SELECT id from countries where ?";
     const countryName = { "name": country };
@@ -118,5 +142,6 @@ module.exports = {
     create,
     assignAddressToCustomer,
     contains,
-    handleAddressCreationAndAssignment
+    handleAddressCreationAndAssignment,
+    getCustomerAddresses
 }

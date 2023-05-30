@@ -36,7 +36,7 @@ Cookie: sessionId=1fb281be-0c22-46d7-885f-1cc2c8436b56; Max-Age=864; Path=/; Exp
 
 ###
 
-DELETE http://localhost:3000/api/v1/customers/1
+DELETE http://localhost:3000/api/v1/customers/2
 Content-Type: application/json
 Cookie: sessionId=1fb281be-0c22-46d7-885f-1cc2c8436b56; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 07:41:09 GMT; HttpOnly
 
@@ -44,3 +44,11 @@ Cookie: sessionId=1fb281be-0c22-46d7-885f-1cc2c8436b56; Max-Age=864; Path=/; Exp
     "password": "Krisko123",
     "deleteMessage": "DELETE"
 }
+
+###
+
+GET http://localhost:3000/api/v1/customers/2/profile
+Content-Type: application/json
+Cookie: sessionId=912e4e74-499e-4e1b-8e92-08946556ebb2; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 19:42:37 GMT; HttpOnly
+
+{}

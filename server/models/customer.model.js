@@ -132,6 +132,23 @@ async function deleteCustomerAddressesById(id) {
     })
 }
 
+async function deleteCustomerAddressesById(id) {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT from customer_addresses where ?`;
+
+        db.query(query, {"customer_id": id}, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result) {
+                resolve(true);
+            } else {
+                resolve(null);
+            }
+        })
+    })
+}
+
 module.exports = {
     deleteCustomerAddressesById,
     updatePassword,

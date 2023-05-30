@@ -79,13 +79,14 @@ CREATE TABLE products (
 );
 
 CREATE TABLE card_products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL,
     customer_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (customer_id)
+        REFERENCES customers (id),
     FOREIGN KEY (product_id)
         REFERENCES products (id),
-    FOREIGN KEY (customer_id)
-        REFERENCES customers (id)
+    PRIMARY KEY (customer_id , product_id)
 );
 
 CREATE TABLE order_status (

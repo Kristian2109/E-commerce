@@ -1,0 +1,11 @@
+POST http://localhost:3000/api/v1/promotions
+Content-Type: application/json
+Cookie: sessionId=912e4e74-499e-4e1b-8e92-08946556ebb2; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 19:42:37 GMT; HttpOnly
+
+{
+    "title": "Best",
+    "description": "One of the best",
+    "discountRate": 20,
+    "startDate": "2022-01-01",
+    "endDate": "2022-10-10"
+}

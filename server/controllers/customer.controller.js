@@ -256,11 +256,24 @@ async function logoutCustomerHttp(req, res) {
     }
 }
 
+async function getCustomerDataHttp(req, res) {
+    try {
+        const { customerId } = req.params;
+        const profileInfo = await Customer.getById(customerId, false);
+        const addressInfo = await Address.getCustomerAddresses(customerId);
+
+        return res.status(200).json({msg:"Data retrieved successfully!", data: {profileInfo, addressInfo}, success:true});
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error)
+    }
+}
+
 module.exports = {
     loginUserHttp,
     registerUserHttp,
     changePasswordHttp,
     logoutCustomerHttp,
+    getCustomerDataHttp,
     restorePasswordHttp,
     verifyRegistrationHttp,
     updateCustomerAddressHttp,
