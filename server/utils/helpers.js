@@ -2,11 +2,11 @@ require("dotenv").config();
 
 const nodemailer = require("nodemailer");
 
-function createRegistrationTemplate(message) {
-    return `<h1>Verifycation link</h1><p>Link to verify your profile: <a href=${message}>Click here</a><p/>`;
+function createRegistrationTemplate(link, message) {
+    return `<h1>Verifycation link</h1><p>${message}: <a href=${link}>Click here</a><p/>`;
 }
 
-async function sendRegistrationMessage(message, toUser) {
+async function sendRegistrationMessage(link, message, toUser) {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -22,7 +22,7 @@ async function sendRegistrationMessage(message, toUser) {
         from: "kristian.petrov1998@gmail.com",
         to: toUser, 
         subject: "Registration in our Ecommerce shop",
-        html: createRegistrationTemplate(message)
+        html: createRegistrationTemplate(link, message)
 
     });
 

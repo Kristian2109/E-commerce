@@ -1,0 +1,47 @@
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "email": "kristian.petrov1998@gmail.com",
+    "password": "A1234567",
+    "firstName": "Kristian",
+    "lastName": "Petrov",
+    "phoneNumber": "0884440155"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "kristian.petrov1998@gmail.com",
+    "password": "A1234567"
+}
+
+###
+
+POST http://localhost:3000/api/v1/auth/logout
+Content-Type: application/json
+Cookie: sessionId=387d54f9-5534-4ba4-b25c-54166722994b; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 08:49:37 GMT; HttpOnly
+
+{}
+
+
+###
+
+POST http://localhost:3000/api/v1/auth/restore-password
+Content-Type: application/json
+
+{
+    "email": "kristian.petrov1998@gmail.com"
+}
+
+###
+
+PATCH http://localhost:3000/api/v1/auth/restore-password/1b5be20e-dd80-4157-b91b-13f1c47a8d5c
+Content-Type: application/json
+
+{
+    "newPassword": "Krisko123"
+}

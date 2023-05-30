@@ -8,7 +8,7 @@ const { loginUserHttp,
 
 authRouter.post("/login", loginUserHttp);
 authRouter.post("/register", registerUserHttp);
-authRouter.get("/verifyRegistration/:email", verifyRegistrationHttp);
+authRouter.get("/verifyRegistration/:verifyToken", verifyRegistrationHttp);
 authRouter.post("/logout", logoutCustomerHttp);
 authRouter.post("/restore-password", createRestorePasswordUrlHttp);
 authRouter.patch("/restore-password/:urlToken", restorePasswordHttp);

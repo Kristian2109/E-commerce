@@ -17,10 +17,13 @@ async function getUserByEmail(email) {
     });
 }
 
-async function getById(id) {
+async function getById(id, includePass) {
     return new Promise((resolve, reject) => {
-        const query = `Select id, first_name, last_name, email, phone_number, created_at, created_at from customers where ?`;
-        console.log(query);
+        const queryWithoutPass = `Select id, first_name, last_name, email, phone_number, created_at, created_at from customers where ?`;
+        const queryWithPass = `Select * from customers where ?`;
+        
+        const query = (includePass) ? queryWithPass : queryWithoutPass;
+
         db.query(query, {"id": id}, (error, result) => {
             if (error) {
                 console.log(error.message);
@@ -56,12 +59,13 @@ async function update(user) {
 }
 
 async function updatePassword(email, newPassword) {
+    console.log(email);
     return new Promise((resolve, reject) => {
         console.log(email, newPassword)
         const query = `UPDATE customers 
                     SET 
                         password = '${newPassword}'
-                    where email = ${email}`;
+                    where email = '${email}'`;
 
         console.log(query);
         db.query(query, (error, result) => {
@@ -94,10 +98,45 @@ async function create(email, hashedPassowd, firstName, lastName, phoneNumber, ro
     })
 }
 
+async function deleteById(id) {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE from customers where ?`;
+
+        db.query(query, {"id": id}, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result) {
+                resolve(true);
+            } else {
+                resolve(null);
+            }
+        })
+    })
+}
+
+async function deleteCustomerAddressesById(id) {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE from customer_addresses where ?`;
+
+        db.query(query, {"customer_id": id}, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result) {
+                resolve(true);
+            } else {
+                resolve(null);
+            }
+        })
+    })
+}
 
 module.exports = {
+    deleteCustomerAddressesById,
     updatePassword,
     getUserByEmail,
+    deleteById,
     getById,
     update,
     create

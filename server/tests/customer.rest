@@ -1,46 +1,14 @@
-POST http://localhost:3000/api/v1/auth/register
+POST http://localhost:3000/api/v1/customers/2/address
 Content-Type: application/json
+Cookie: sessionId=a76b3444-f8a5-4ced-a264-f1c85618778c; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 08:05:31 GMT; HttpOnly
 
 {
-    "email": "kristian.pertrov1998@gmail.com",
-    "password": "A1234567",
-    "firstName": "Kristian",
-    "lastName": "Petrov",
-    "phoneNumber": "0884440155"
-}
-
-###
-
-POST http://localhost:3000/api/v1/auth/login
-Content-Type: application/json
-
-{
-    "email": "kristian.petrov1998@gmail.com",
-    "password": "Krisko123"
-}
-
-###
-
-POST http://localhost:3000/api/v1/auth/logout
-Content-Type: application/json
-Cookie: sessionId=387d54f9-5534-4ba4-b25c-54166722994b; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 08:49:37 GMT; HttpOnly
-
-{}
-
-
-###
-
-POST http://localhost:3000/api/v1/customers/1/address
-Content-Type: application/json
-Cookie: sessionId=d3dc9fe4-a9aa-48b7-ab15-330dd5e6fad9; Max-Age=864; Path=/; Expires=Mon, 29 May 2023 11:38:45 GMT; HttpOnly
-
-{
-    "city": "Budapest",
-    "country": "Romania",
+    "city": "Sofia",
+    "country": "Bulgaria",
     "streetName": "Main",
     "streetNumber": 62,
     "postalCode": 1000,
-    "addressNumber": 2
+    "addressNumber": 1
 }
 
 ###
@@ -57,18 +25,22 @@ Cookie: sessionId=2649e854-ecb3-4d0c-bcaf-7876f561cf1b; Max-Age=864; Path=/; Exp
 
 ###
 
-POST http://localhost:3000/api/v1/auth/restore-password
+PATCH http://localhost:3000/api/v1/customers/1/password
 Content-Type: application/json
+Cookie: sessionId=1fb281be-0c22-46d7-885f-1cc2c8436b56; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 07:41:09 GMT; HttpOnly
 
 {
-    "email": "kristian.petrov1998@gmail.com"
+    "oldPassword": "Pesho123",
+    "newPassword": "Krisko123"
 }
 
 ###
 
-PATCH http://localhost:3000/api/v1/auth/restore-password/1b5be20e-dd80-4157-b91b-13f1c47a8d5c
+DELETE http://localhost:3000/api/v1/customers/1
 Content-Type: application/json
+Cookie: sessionId=1fb281be-0c22-46d7-885f-1cc2c8436b56; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 07:41:09 GMT; HttpOnly
 
 {
-    "newPassword": "Krisko123"
+    "password": "Krisko123",
+    "deleteMessage": "DELETE"
 }

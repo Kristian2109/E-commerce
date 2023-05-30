@@ -64,12 +64,14 @@ async function registerUserHttp(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const userData = {email, hashedPassword, firstName, lastName, phoneNumber};
+        const verifyToken = uuidv4();
 
-        await redisClient.setEx(`UnverifiedUser:${email}`, VERIFICATION_TIMEFRAME, JSON.stringify(userData));
+        await redisClient.setEx(`UnverifiedUser:${verifyToken}`, VERIFICATION_TIMEFRAME, JSON.stringify(userData));
 
-        const urlForVerification = `http://localhost:3000/api/v1/auth/verifyRegistration/${email}`;
+        const urlForVerification = `http://localhost:3000/api/v1/auth/verifyRegistration/${verifyToken}`;
+        const registrationMessage = "Click on the link to confirm you registration!";
 
-        sendRegistrationMessage(urlForVerification, email);
+        sendRegistrationMessage(urlForVerification, registrationMessage , email);
         return res.status(200).json({msg: "Waiting for verification on the email address!", success: true});
 
     } catch (error) {
@@ -80,9 +82,8 @@ async function registerUserHttp(req, res) {
 
 async function verifyRegistrationHttp(req, res) {
     try {
-        const email = req.params.email;
-        console.log(email);
-        let user = await redisClient.get(`UnverifiedUser:${email}`);
+        const verifyToken = req.params.verifyToken;
+        let user = await redisClient.get(`UnverifiedUser:${verifyToken}`);
 
         if (!user) {
             return res.status(401).json({error: "Invalid email!", success: false});
@@ -101,7 +102,28 @@ async function verifyRegistrationHttp(req, res) {
 }
 
 async function changePasswordHttp(req, res) {
+    try {
+        const { oldPassword, newPassword } = req.body;
+        const { customerId } = req.params;
 
+        const customer = await Customer.getById(customerId, true);
+
+        const isOldPasswordValid = await bcrypt.compare(oldPassword, customer.password);
+        if (!isOldPasswordValid) {
+            return res.status(401).json({error: "Invalid old password!", success: false});
+        }
+
+        if (!isValidPassword(newPassword)) {
+            return res.status(403).json({error: "Incorrect password format!", success: false});
+        }
+
+        customer.password = await bcrypt.hash(newPassword, 10);
+
+        await Customer.updatePassword(customer.email, customer.password);
+        return res.status(200).json({msg: "Password changed successfully!", success: true});
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error);
+    }
 }
 
 async function createRestorePasswordUrlHttp(req, res) {
@@ -112,8 +134,10 @@ async function createRestorePasswordUrlHttp(req, res) {
         await redisClient.setEx(`Forgotten pass, token:${urlToken}`, VERIFICATION_TIMEFRAME, JSON.stringify(email));
 
         const restorePasswordUrl = `http://localhost:3000/api/v1/auth/restore-password/${urlToken}`;
-        
-        return res.status(200).json({data: restorePasswordUrl, msg: "Link for restoration of the password!", success: true});
+
+        sendRegistrationMessage(restorePasswordUrl, email);
+
+        return res.status(200).json({msg: "Link for restoration of the password send to email!", success: true});
     } catch (error) {
         sendInternalServerErrorMessage(res, error);
     }
@@ -126,7 +150,8 @@ async function restorePasswordHttp(req, res) {
             res.status(401).json({error: "No token!", success: false});
         }
 
-        const email = await redisClient.get(`Forgotten pass, token:${urlToken}`);
+        let email = await redisClient.get(`Forgotten pass, token:${urlToken}`);
+        email = JSON.parse(email);
 
         if (!email) {
             res.status(401).json({error: "No valid token!", success: false});
@@ -148,7 +173,7 @@ async function restorePasswordHttp(req, res) {
 
 async function updateCustomerAddressHttp(req, res) {
     try {
-        const customerId = req.params.customerId;
+        const { customerId } = req.params;
         const { city, country, streetName, streetNumber, postalCode, addressNumber } = req.body;
         const result = await Address.handleAddressCreationAndAssignment(city, country, streetName, streetNumber, postalCode, customerId, addressNumber);
 
@@ -163,7 +188,7 @@ async function updateCustomerDetailsHttp(req, res) {
         const { firstName, lastName, phoneNumber } = req.body;
         const userId = Number(req.params.customerId);
 
-        const customer = await Customer.getById(userId);
+        const customer = await Customer.getById(userId, false);
 
         if (firstName) {
             if (!isValidName(firstName)) {
@@ -187,12 +212,33 @@ async function updateCustomerDetailsHttp(req, res) {
         return res.status(202).json({msg: "Update completed!", data: customer, success: true});
 
     } catch (error) {
-        sendInternalServerErrorMessage(res, error);
+        return sendInternalServerErrorMessage(res, error);
     }
 }
 
 async function deleteCustomerProfileHttp(req, res) {
+    try {
+        const { password, deleteMessage } = req.body;
+        const { customerId } = req.params;
 
+        const customer = await Customer.getById(customerId, true);
+
+        const isPasswordValid = await bcrypt.compare(password, customer.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({error: "Invalid password!", success: false});
+        }
+
+        if (deleteMessage !== "DELETE") {
+            return res.status(400).json({error: "Invalid delete message!", success: false});
+        }
+
+        await Customer.deleteCustomerAddressesById(customerId);
+        await Customer.deleteById(customerId);
+        return res.status(202).json({msg: "Profile deleted successfully!", success: true});
+
+    } catch (error) {
+        return sendInternalServerErrorMessage(res, error);
+    }
 }
 
 async function logoutCustomerHttp(req, res) {
@@ -213,6 +259,7 @@ async function logoutCustomerHttp(req, res) {
 module.exports = {
     loginUserHttp,
     registerUserHttp,
+    changePasswordHttp,
     logoutCustomerHttp,
     restorePasswordHttp,
     verifyRegistrationHttp,

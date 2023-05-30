@@ -43,13 +43,6 @@ CREATE TABLE customer_addresses (
     PRIMARY KEY (customer_id, address_id)
 );
 
-CREATE TABLE categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
 CREATE TABLE promotions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255),
@@ -59,6 +52,15 @@ CREATE TABLE promotions (
     start_date DATETIME,
     end_date DATETIME,
     created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description TEXT,
+    promotion_id INT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (promotion_id) REFERENCES promotions(id)
 );
 
 CREATE TABLE products (
@@ -135,6 +137,24 @@ CREATE TABLE reviews (
         REFERENCES customers (id)
 );
 
+CREATE TABLE image_types (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    type_name VARCHAR(32)
+);
+
+CREATE TABLE images (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    title VARCHAR(255),
+    description VARCHAR(255),
+    image_type INT NOT NULL,
+    product_id INT,
+    category_id INT,
+    promotion_id INT,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (promotion_id) REFERENCES promotions(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
 insert into roles (role_name) values
 ("administrator"),
 ("moderator"),
@@ -143,3 +163,8 @@ insert into roles (role_name) values
 insert into countries (name) values 
 ("Romania"),
 ("Bulgaria");
+
+INSERT INTO image_types (type_name) values
+("product_image"),
+("category_image"),
+("promotion_image");
