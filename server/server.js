@@ -5,6 +5,7 @@ const { db } = require("./config/database");
 const authRouter = require("./routes/auth.route");
 const customerRouter = require("./routes/customer.route");
 const promotionRouter = require("./routes/promotion.route");
+const categoryRouter = require("./routes/category.route");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/promotions", promotionRouter);
+app.use("/api/v1/categories", categoryRouter);
 
 
 app.get("/", (req, res) => {

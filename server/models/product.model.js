@@ -1,12 +1,12 @@
 const { db }= require("../config/database");
 
-async function getAllProducts(email) {
+async function assignPromotion(productId, promotionId) {
     return new Promise((resolve, reject) => {
         const query = "SELECT * from "
     });
 }
 
-async function getUserByEmail(email) {
+async function create() {
     return new Promise((resolve, reject) => {
         
     });

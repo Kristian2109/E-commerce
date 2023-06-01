@@ -19,6 +19,43 @@ async function create(title, description, discountRate, startDate, endDate) {
     });
 }
 
+async function getById(promotionId) {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT * from promotions 
+                    where id = ${Number(promotionId)}`;
+
+        db.query(query, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result.length > 0) {
+                resolve(result[0]);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
+async function update(promotionId, newPromotion) {
+    return new Promise((resolve, reject) => {
+        const query = `UPDATE promotions set ? where id = ${promotionId}`;
+
+        db.query(query, newPromotion, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result.length > 0) {
+                resolve(result[0]);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
 module.exports = {
-    create
+    update,
+    create,
+    getById
 }
