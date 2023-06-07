@@ -39,31 +39,73 @@ async function updatePromotionHttp(req, res) {
 
         await Promotion.update(promotionId, newPromotion);
 
-        return res.status(201).json({msg: "Promotion update!", success: true});
+        return res.status(201).json({msg: "Promotion updated!", success: true});
     } catch (error) {
         sendInternalServerErrorMessage(res, error);
     }
 }
 
 async function deletePromotionHttp(req, res) {
-    
+    const { promotionId } = req.params;
+    try {
+
+        const promotion = await Promotion.getById(promotionId);
+
+        if (!promotion) {
+            return res.status(404).json({msg: "No existing promotion!", success: false});
+        }
+
+        await Promotion.removePromotionFromCategories(promotionId);
+        await Promotion.removePromotionFromProducts(promotionId);
+        await Promotion.deletePromotion(promotionId);
+
+        return res.status(204).json({msg: "Promotion deleted!", success: true});
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error);
+    }
 }
 
 async function getPromotionHttp(req, res) {
-    
+    const { promotionId } = req.params;
+    try {
+        const promotion = await Promotion.getById(promotionId);
+
+        if (!promotion) {
+            return res.status(404).json({msg: "No existing promotion!", success: false});
+        }
+
+        return res.status(200).json({data: promotion, success: true});
+
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error);
+    }
 }
 
-async function getAllPromotionsHttp(req, res) {
-    
-}
+async function getPromotionsWithPaginationHttp(req, res) {
+    let { limit, site }= req.query;
 
-async function getPromotionHttp(req, res) {
-    
+    if (!limit) {
+        limit = 20;
+    }
+
+    if (!site) {
+        site = 1;
+    }
+    const offset = limit * (site - 1);
+
+    try {
+        const promotions = await Promotion.getPromotionsWithPagination(limit, offset);
+
+        return res.status(200).json({data: promotions, success: true});
+
+    } catch (error) {
+        sendInternalServerErrorMessage(res, error);
+    }
 }
 
 module.exports = {
     createPromotionHttp,
-    getAllPromotionsHttp,
+    getPromotionsWithPaginationHttp,
     deletePromotionHttp,
     updatePromotionHttp,
     getPromotionHttp

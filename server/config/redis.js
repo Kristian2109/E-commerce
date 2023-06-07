@@ -2,7 +2,7 @@ const redis = require("redis");
 
 const redisClient = redis.createClient();
 
-redisClient.connect(() => {
+redisClient.connect().then(() => {
     console.log("Redis database running!");
 });
 

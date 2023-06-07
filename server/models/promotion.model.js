@@ -1,6 +1,6 @@
 const { db }= require("../config/database");
 
-async function create(title, description, discountRate, startDate, endDate) {
+function create(title, description, discountRate, startDate, endDate) {
     return new Promise((resolve, reject) => {
         const query = `INSERT INTO promotions 
         (title, description, discount_rate, start_date, end_date) VALUES
@@ -19,7 +19,7 @@ async function create(title, description, discountRate, startDate, endDate) {
     });
 }
 
-async function getById(promotionId) {
+function getById(promotionId) {
     return new Promise((resolve, reject) => {
         const query = `SELECT * from promotions 
                     where id = ${Number(promotionId)}`;
@@ -37,7 +37,7 @@ async function getById(promotionId) {
     });
 }
 
-async function update(promotionId, newPromotion) {
+function update(promotionId, newPromotion) {
     return new Promise((resolve, reject) => {
         const query = `UPDATE promotions set ? where id = ${promotionId}`;
 
@@ -54,8 +54,85 @@ async function update(promotionId, newPromotion) {
     });
 }
 
+function deletePromotion(promotionId) {
+    return new Promise((resolve, reject) => {
+        const query = `DELETE from promotions where id = ${promotionId}`;
+
+        db.query(query, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result) {
+                resolve(result);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
+function removePromotionFromCategories(promotionId) {
+    return new Promise((resolve, reject) => {
+        const query = `update categories set promotion_id = null where promotion_id = ${promotionId}`;
+
+        db.query(query, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result.length > 0) {
+                resolve(result[0]);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
+function removePromotionFromProducts(promotionId) {
+    return new Promise((resolve, reject) => {
+        const query = `update products set promotion_id = null where promotion_id = ${promotionId}`;
+
+        db.query(query, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result.length > 0) {
+                resolve(result[0]);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
+function getPromotionsWithPagination(limit, offset) {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT 
+                            *
+                        FROM
+                            promotions
+                        ORDER BY start_date
+                        LIMIT ${limit} OFFSET ${offset}`;
+        
+        db.query(query, (error, result) => {
+            if (error) {
+                console.log(error.message);
+                reject(error);
+            } else if (result.length > 0) {
+                resolve(result);
+            } else {
+                resolve(null);
+            }
+        })
+    });
+}
+
 module.exports = {
     update,
     create,
-    getById
+    getById,
+    deletePromotion,
+    getPromotionsWithPagination,
+    removePromotionFromProducts,
+    removePromotionFromCategories,
 }
