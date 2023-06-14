@@ -1,8 +1,7 @@
 const bcrypt = require("bcrypt");
 const Customer = require("../models/customer.model");
 const Address = require("../models/address.model");
-const verifyAuthentication = require("../middleware/verifyAuth");
-const uuidv4 = require("uuid").v4;
+const idGenerator = require("uuid").v4;
 const { isValidUserData, isValidName, isValidPassword } = require("../utils/verifyData");
 const { sendRegistrationMessage, sendInternalServerErrorMessage } = require("../utils/helpers");
 const redisClient = require("../config/redis")
@@ -34,7 +33,7 @@ async function loginUserHttp(req, res) {
             role: user.role
         }
 
-        const sessionId = uuidv4();
+        const sessionId = idGenerator();
         res.cookie("sessionId", sessionId, {
             maxAge: SESSION_DURATION,
             httpOnly: true
@@ -64,7 +63,7 @@ async function registerUserHttp(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const userData = {email, hashedPassword, firstName, lastName, phoneNumber};
-        const verifyToken = uuidv4();
+        const verifyToken = idGenerator();
 
         await redisClient.setEx(`UnverifiedUser:${verifyToken}`, VERIFICATION_TIMEFRAME, JSON.stringify(userData));
 
@@ -130,7 +129,7 @@ async function createRestorePasswordUrlHttp(req, res) {
     try {
         const { email } = req.body;
 
-        const urlToken = uuidv4();
+        const urlToken = idGenerator();
         await redisClient.setEx(`Forgotten pass, token:${urlToken}`, VERIFICATION_TIMEFRAME, JSON.stringify(email));
 
         const restorePasswordUrl = `http://localhost:3000/api/v1/auth/restore-password/${urlToken}`;

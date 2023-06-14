@@ -1,4 +1,5 @@
 const authRouter = require("express").Router();
+
 const { loginUserHttp,
         registerUserHttp,
         verifyRegistrationHttp,

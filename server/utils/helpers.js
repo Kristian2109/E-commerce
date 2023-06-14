@@ -3,7 +3,7 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 function createRegistrationTemplate(link, message) {
-    return `<h1>Verifycation link</h1><p>${message}: <a href=${link}>Click here</a><p/>`;
+    return `<h1>Verification link</h1><p>${message}: <a href=${link}>Click here</a><p/>`;
 }
 
 async function sendRegistrationMessage(link, message, toUser) {
@@ -34,7 +34,12 @@ function sendInternalServerErrorMessage(res, error) {
     return res.status(501).json({error: "Internal server error!", success: false});
 }
 
+function computeOffsetOfPage(page, limit) {
+    return (page - 1) * limit
+}
+
 module.exports = {
+    computeOffsetOfPage,
     sendRegistrationMessage,
     sendInternalServerErrorMessage
 }

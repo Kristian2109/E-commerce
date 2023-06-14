@@ -72,6 +72,7 @@ CREATE TABLE products (
     image_url VARCHAR(200),
     category_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
+    in_stock INT,
     FOREIGN KEY (category_id)
         REFERENCES categories (id),
 	FOREIGN KEY (promotion_id)

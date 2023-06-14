@@ -20,15 +20,14 @@ async function updatePromotionHttp(req, res) {
     const { title, description, discountRate, startDate, endDate  } = req.body;
     
     try {
-        console.log(promotionId);
         const oldPromotion = await Promotion.getById(promotionId);
-        console.log(oldPromotion);
         
         if (!oldPromotion) { 
             return res.status(400).json({error: "Invalid promotion id!", success: false});
         }
 
         const newPromotion = {
+            id: promotionId,
             title: title || oldPromotion.title,
             description: description || oldPromotion.description,
             discount_rate: discountRate || oldPromotion.discount_rate,
@@ -37,7 +36,7 @@ async function updatePromotionHttp(req, res) {
         }
         console.log(newPromotion);
 
-        await Promotion.update(promotionId, newPromotion);
+        await Promotion.update(newPromotion);
 
         return res.status(201).json({msg: "Promotion updated!", success: true});
     } catch (error) {

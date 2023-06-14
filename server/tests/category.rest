@@ -1,9 +1,35 @@
 POST http://localhost:3000/api/v1/categories
 Content-Type: application/json
-Cookie: sessionId=912e4e74-499e-4e1b-8e92-08946556ebb2; Max-Age=864; Path=/; Expires=Tue, 30 May 2023 19:42:37 GMT; HttpOnly
+Cookie: sessionId=1515bce4-f082-44a0-adce-2c6e66c95b92; Max-Age=864; Path=/; Expires=Wed, 14 Jun 2023 07:51:42 GMT; HttpOnly
 
 {
-    "name": "Best",
+    "name": "First of the best!",
     "description": "One of the best",
     "promotionId": 2
 }
+
+###
+DELETE http://localhost:3000/api/v1/categories/5
+Content-Type: application/json
+Cookie: sessionId=1515bce4-f082-44a0-adce-2c6e66c95b92; Max-Age=864; Path=/; Expires=Wed, 14 Jun 2023 07:51:42 GMT; HttpOnly
+
+###
+PUT http://localhost:3000/api/v1/categories/2
+Content-Type: application/json
+Cookie: sessionId=1515bce4-f082-44a0-adce-2c6e66c95b92; Max-Age=864; Path=/; Expires=Wed, 14 Jun 2023 07:51:42 GMT; HttpOnly
+
+{
+    "name": "First of the best!",
+    "description": "One of the best",
+    "promotionId": 2
+}
+
+###
+GET http://localhost:3000/api/v1/categories?limit=10&page=1&sortOrder=id
+Content-Type: application/json
+Cookie: sessionId=1515bce4-f082-44a0-adce-2c6e66c95b92; Max-Age=864; Path=/; Expires=Wed, 14 Jun 2023 07:51:42 GMT; HttpOnly
+
+###
+GET http://localhost:3000/api/v1/categories/3
+Content-Type: application/json
+Cookie: sessionId=1515bce4-f082-44a0-adce-2c6e66c95b92; Max-Age=864; Path=/; Expires=Wed, 14 Jun 2023 07:51:42 GMT; HttpOnly

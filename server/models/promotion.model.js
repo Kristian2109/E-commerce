@@ -37,11 +37,11 @@ function getById(promotionId) {
     });
 }
 
-function update(promotionId, newPromotion) {
+function update(newPromotion) {
     return new Promise((resolve, reject) => {
-        const query = `UPDATE promotions set ? where id = ${promotionId}`;
+        const query = `UPDATE promotions set ? where ?`;
 
-        db.query(query, newPromotion, (error, result) => {
+        db.query(query, [newPromotion, {id: newPromotion.id}], (error, result) => {
             if (error) {
                 console.log(error.message);
                 reject(error);
