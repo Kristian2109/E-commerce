@@ -1,4 +1,4 @@
-const { sendInternalServerErrorMessage } = require("../utils/helpers");
+const { sendInternalServerErrorMessage, computeOffsetOfPage } = require("../utils/helpers");
 const Promotion = require("../models/promotion.model");
 
 async function createPromotionHttp(req, res) {
@@ -81,20 +81,12 @@ async function getPromotionHttp(req, res) {
 }
 
 async function getPromotionsWithPaginationHttp(req, res) {
-    let { limit, site }= req.query;
+    let { limit, page }= req.query;
 
-    if (!limit) {
-        limit = 20;
-    }
-
-    if (!site) {
-        site = 1;
-    }
-    const offset = limit * (site - 1);
+    const offset = computeOffsetOfPage(limit, page);
 
     try {
         const promotions = await Promotion.getPromotionsWithPagination(limit, offset);
-
         return res.status(200).json({data: promotions, success: true});
 
     } catch (error) {

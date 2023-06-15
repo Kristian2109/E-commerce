@@ -35,6 +35,9 @@ function sendInternalServerErrorMessage(res, error) {
 }
 
 function computeOffsetOfPage(page, limit) {
+    if (!page || page > 100 || page < 1) { page = 1; }
+    if (!limit || limit > 100 || limit < 1) { limit = 20; }
+
     return (page - 1) * limit
 }
 

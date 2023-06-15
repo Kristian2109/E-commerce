@@ -33,3 +33,9 @@ Cookie: sessionId=f581171b-5dfa-4c66-a304-19fbef81805d; Max-Age=864; Path=/; Exp
 GET http://localhost:3000/api/v1/promotions/2
 Content-Type: application/json
 Cookie: sessionId=f581171b-5dfa-4c66-a304-19fbef81805d; Max-Age=864; Path=/; Expires=Wed, 07 Jun 2023 09:36:17 GMT; HttpOnly
+
+###
+
+GET http://localhost:3000/api/v1/promotions
+Content-Type: application/json
+Cookie: sessionId=f581171b-5dfa-4c66-a304-19fbef81805d; Max-Age=864; Path=/; Expires=Wed, 07 Jun 2023 09:36:17 GMT; HttpOnly
