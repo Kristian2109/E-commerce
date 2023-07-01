@@ -79,10 +79,10 @@ async function updatePassword(email, newPassword) {
     })
 }
 
-async function create(email, hashedPassowd, firstName, lastName, phoneNumber, roleId) {
+async function create(email, hashedPassword, firstName, lastName, phoneNumber, roleId) {
     return new Promise((resolve, reject) => {
         const query = `Insert into customers set ?`;
-        const customer = {"email": email, "password": hashedPassowd,
+        const customer = {"email": email, "password": hashedPassword,
                           "first_name": firstName, "last_name": lastName,
                           "phone_number": phoneNumber, "role_id": roleId }
         db.query(query, customer, (error, result) => {

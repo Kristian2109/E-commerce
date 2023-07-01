@@ -24,7 +24,7 @@ async function getCustomerAddresses(customerId) {
     })
 }
 
-async function getCoutryIdByName(country) {
+async function getCountryIdByName(country) {
     const query = "SELECT id from countries where ?";
     const countryName = { "name": country };
 
@@ -126,7 +126,7 @@ async function assignAddressToCustomer(addressId, customerId, addressLevel) {
 }
 
 async function handleAddressCreationAndAssignment(city, countryName, streetName, streetNumber, postalCode, customerId, addressNumber) {
-    const countryId = await getCoutryIdByName(countryName);
+    const countryId = await getCountryIdByName(countryName);
     let addressId = await contains(city, countryId, streetName, streetNumber, postalCode, customerId, addressNumber)
     if (!addressId) {
         addressId = await create(city, countryId, streetName, streetNumber, postalCode, customerId, addressNumber);
