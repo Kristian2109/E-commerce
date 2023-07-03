@@ -7,6 +7,7 @@ const customerRouter = require("./routes/customer.route");
 const promotionRouter = require("./routes/promotion.route");
 const categoryRouter = require("./routes/category.route");
 const productRouter = require("./routes/product.route");
+const orderRouter = require("./routes/order.route")
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/promotions", promotionRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/orders", orderRouter);
 
 
 app.get("/", (req, res) => {

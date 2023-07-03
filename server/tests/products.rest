@@ -26,11 +26,11 @@ Cookie: sessionId=550a70a8-6034-432d-a6b0-f410487ad528; Max-Age=864; Path=/; Exp
 
 ###
 
-PUT http://localhost:3000/api/v1/products/6
+PUT http://localhost:3000/api/v1/products/41
 Content-Type: application/json
 Cookie: sessionId=550a70a8-6034-432d-a6b0-f410487ad528; Max-Age=864; Path=/; Expires=Mon, 03 Jul 2023 08:10:12 GMT; HttpOnly
 
 {
-    "isActive": true
+    "inStock": 20
 }
 

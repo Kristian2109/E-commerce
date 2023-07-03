@@ -99,7 +99,6 @@ CREATE TABLE orders (
     primary_product_id INT NOT NULL,
     customer_id INT NOT NULL,
     status INT NOT NULL,
-    total_amount DECIMAL(10 , 2 ) NOT NULL,
     address_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (customer_id)
@@ -117,7 +116,6 @@ CREATE TABLE order_items (
     order_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
-    is_primary_product BOOLEAN NOT NULL,
     FOREIGN KEY (order_id)
         REFERENCES orders (id),
     FOREIGN KEY (product_id)
@@ -160,6 +158,15 @@ insert into roles (role_name) values
 ("administrator"),
 ("moderator"),
 ("user");
+
+insert into order_status (description) values
+("pending"),
+("awaiting shipment"),
+("shipped"),
+("awaiting pickup"),
+("completed"),
+("declined"),
+("refunded");
 
 insert into countries (name) values 
 ("Romania"),

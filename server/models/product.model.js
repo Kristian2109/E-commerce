@@ -129,12 +129,6 @@ async function update(updatedProduct) {
     });
 }
 
-async function getUserByEmail(email) {
-    return new Promise((resolve, reject) => {
-        
-    });
-}
-
 module.exports = {
     getMany,
     getById,

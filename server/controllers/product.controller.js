@@ -7,7 +7,7 @@ const Product = require("../models/product.model");
 
 async function getManyProductsHttp(req, res) {
     try {
-        const { page, limit, sortOrder, maxPrice, minPrice, startDate, endDate, categoryId } = req.query;
+        const { page, limit, sortOrder, maxPrice, minPrice, startDate, endDate, categoryId, quantity } = req.query;
 
         const offset = computeOffsetOfPage(page, limit);
 
