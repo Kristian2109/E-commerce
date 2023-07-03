@@ -33,8 +33,7 @@ async function updatePromotionHttp(req, res) {
             discount_rate: discountRate || oldPromotion.discount_rate,
             start_date: startDate || oldPromotion.start_date,
             end_date: endDate || oldPromotion.end_date,
-        }
-        console.log(newPromotion);
+        };
 
         await Promotion.update(newPromotion);
 

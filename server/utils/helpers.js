@@ -41,8 +41,33 @@ function computeOffsetOfPage(page, limit) {
     return (page - 1) * limit;
 }
 
+function getSortOrderParameter(sortOrderString) {
+
+    const lowerCase = sortOrderString.toLowerCase();
+
+    if (lowerCase === "price asc") 
+        return sortOrderString;
+    else if (lowerCase === "price desc")
+        return sortOrderString;
+    else if (lowerCase === "created_at asc")
+        return sortOrderString;
+    else if (lowerCase === "created_at desc")
+        return sortOrderString
+    else
+        return 1;
+}
+
+class InvalidRelationshipError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "InvalidRelationshipError";
+    }
+}
+
 module.exports = {
     computeOffsetOfPage,
     sendRegistrationMessage,
-    sendInternalServerErrorMessage
+    getSortOrderParameter,
+    sendInternalServerErrorMessage,
+    InvalidRelationshipError
 }

@@ -1,12 +1,21 @@
 const { db }= require("../config/database");
 
-function create(title, description, discountRate, startDate, endDate) {
-    return new Promise((resolve, reject) => {
-        const query = `INSERT INTO promotions 
-        (title, description, discount_rate, start_date, end_date) VALUES
-        ('${title}', '${description}', ${discountRate}, '${startDate}', '${endDate}')`;
 
-        db.query(query, (error, result) => {
+
+function create(title, description, discountRate, startDate, endDate) {
+    
+    const query = "INSERT INTO promotions set ?, ?, ?, ?, ?";
+
+    const parameters = [
+        { title },
+        { description } ,
+        { discount_rate: discountRate },
+        { start_date: startDate },
+        { end_date: endDate }
+    ];
+
+    return new Promise((resolve, reject) => {
+        db.query(query, parameters, (error, result) => {
             if (error) {
                 console.log(error.message);
                 reject(error);
@@ -36,6 +45,7 @@ function getById(promotionId) {
         })
     });
 }
+
 
 function update(newPromotion) {
     return new Promise((resolve, reject) => {
